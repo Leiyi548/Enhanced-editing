@@ -78,9 +78,9 @@ const DEFAULT_SETTINGS = {
     version: "0.4.5",
     hColor: "",
     bColor: "",
-    hColor1: "#F36208",
-    hColor2: "#81B300",
-    hColor3: "#2485E3",
+    hColor1: "red",
+    hColor2: "orange",
+    hColor3: "yellow",
     hColor4: "#C32E94",
     hColor5: "#13C6C3",
 
@@ -230,57 +230,10 @@ class MyPlugin extends obsidian.Plugin {
         });
 
         this.addCommand({
-            id: 'mouse-up',
-            name: '游标上移',
-            callback: () => this.游标上移(),
-            hotkeys: [{ modifiers: ["Alt"], key: "I" } ]
-        });
-        this.addCommand({
-            id: 'mouse-down',
-            name: '游标下移',
-            callback: () => this.游标下移(),
-            hotkeys: [{ modifiers: ["Alt"], key: "K" } ]
-        });
-        this.addCommand({
-            id: 'mouse-left',
-            name: '游标左移',
-            callback: () => this.游标左移(),
-            hotkeys: [{ modifiers: ["Alt"], key: "J" } ]
-        });
-        this.addCommand({
-            id: 'mouse-right',
-            name: '游标右移',
-            callback: () => this.游标右移(),
-            hotkeys: [{ modifiers: ["Alt"], key: "L" } ]
-        });
-        this.addCommand({
-            id: 'mouse-start',
-            name: '游标移至行首',
-            callback: () => this.游标移至行首(),
-            hotkeys: [{ modifiers: ["Alt"], key: "U" } ]
-        });
-        this.addCommand({
-            id: 'mouse-end',
-            name: '游标移至行尾',
-            callback: () => this.游标移至行尾(),
-            hotkeys: [{ modifiers: ["Alt"], key: "O" } ]
-        });
-        this.addCommand({
-            id: 'note-start',
-            name: '游标移至文首',
-            callback: () => this.游标移至文首()
-        });
-        this.addCommand({
-            id: 'note-end',
-            name: '游标移至文末',
-            callback: () => this.游标移至文末()
-        });
-
-        this.addCommand({
             id: 'biaoti0-text',
             name: '取消标题',
             callback: () => this.标题语法(""),
-            hotkeys: [{ modifiers: ["Mod"], key: "`" } ]
+            hotkeys: [{ modifiers: ["Mod"], key: "0" } ]
         });
         this.addCommand({
             id: 'biaoti1-text',
@@ -353,20 +306,20 @@ class MyPlugin extends obsidian.Plugin {
             id: 'cuti-text',
             name: '**粗体**',
             callback: () => this.转换粗体(),
-            hotkeys: [{ modifiers: ["Alt"], key: "C" } ]
+            //hotkeys: [{ modifiers: ["Alt"], key: "C" } ]
         }); 
 
         this.addCommand({
             id: 'gaoliang-format',
             name: '==高亮==格式刷',
             callback: () => this.高亮格式刷(),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "G" } ]
+            //hotkeys: [{ modifiers: ["Alt","Shift"], key: "G" } ]
         });
         this.addCommand({
             id: 'gaoliang-text',
             name: '==高亮==',
             callback: () => this.转换高亮(),
-            hotkeys: [{ modifiers: ["Alt"], key: "G" } ]
+            //hotkeys: [{ modifiers: ["Alt"], key: "G" } ]
         });
 
         /**/
@@ -374,13 +327,13 @@ class MyPlugin extends obsidian.Plugin {
             id: 'xieti-format',
             name: '*斜体*格式刷',
             callback: () => this.斜体格式刷(),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "X" } ]
+            //hotkeys: [{ modifiers: ["Alt","Shift"], key: "X" } ]
         });
         this.addCommand({
             id: 'xieti-text',
             name: '*斜体*',
             callback: () => this.转换斜体(),
-            hotkeys: [{ modifiers: ["Alt"], key: "X" } ]
+            //hotkeys: [{ modifiers: ["Alt"], key: "X" } ]
         });
 
         /**/
@@ -388,13 +341,13 @@ class MyPlugin extends obsidian.Plugin {
             id: 'shanchu-format',
             name: '~~删除线~~格式刷',
             callback: () => this.删除线格式刷(),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "S" } ]
+            //hotkeys: [{ modifiers: ["Alt","Shift"], key: "S" } ]
         });
         this.addCommand({
             id: 'shanchu-text',
             name: '~~删除线~~',
             callback: () => this.转换删除线(),
-            hotkeys: [{ modifiers: ["Alt"], key: "S" } ]
+            //hotkeys: [{ modifiers: ["Alt"], key: "S" } ]
         });
 
         /**/
@@ -402,13 +355,13 @@ class MyPlugin extends obsidian.Plugin {
             id: 'xiahua-format',
             name: '_下划线_格式刷',
             callback: () => this.下划线格式刷(),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "H" } ]
+            // hotkeys: [{ modifiers: ["Alt","Shift"], key: "H" } ]
         });
         this.addCommand({
             id: 'xiahua-text',
             name: '_下划线_',
             callback: () => this.转换下划线(),
-            hotkeys: [{ modifiers: ["Alt"], key: "H" } ]
+            // hotkeys: [{ modifiers: ["Alt"], key: "H" } ]
         });
 
         /* Obsidian自带此功能
@@ -687,18 +640,6 @@ class MyPlugin extends obsidian.Plugin {
             callback: () => this.删除当前段落()
         });
 
-        this.addCommand({
-            id: 'parent-biaozhu',
-            name: '光标向上跳转',
-            callback: () => this.光标跳转("上"),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "J" } ]
-        });
-        this.addCommand({
-            id: 'next-biaozhu',
-            name: '光标向下跳转',
-            callback: () => this.光标跳转("下"),
-            hotkeys: [{ modifiers: ["Alt","Shift"], key: "L" } ]
-        });
         
         this.addCommand({
             id: 'Selection-text',
@@ -920,31 +861,6 @@ class MyPlugin extends obsidian.Plugin {
                 };
             }
         }));
-
-        /*
-        this.registerEvent(this.app.vault.on('delete', (file) => {
-            if (file && file.path) {
-                this.saveSettings();
-            }
-        }));
-
-        this.registerEvent(this.app.vault.on('rename', (file, oldPath) => {
-            if (file && file.path) {
-                this.saveSettings();
-            }
-        }));
-        
-        this.registerCodeMirror((cm) => {
-            let cmEditor = cm;
-            let currentExtraKeys = cmEditor.getOption('extraKeys');
-            let moreKeys = {
-                'Enter': (cm) => {
-                    编辑模式 = this.获取编辑模式 ();
-                    当前光标 = 编辑模式.getCursor();
-                }
-            };            
-        });
-        */
     };
 
     实用命令菜单() {
@@ -1325,100 +1241,7 @@ class MyPlugin extends obsidian.Plugin {
         };
     };
 
-    /** 以下为自定义功能函数 */
-    光标跳转(方向) {
-        this.获取编辑器信息 ();
-        //var 选择字数=0;
-        var 表达式;
-        if(编辑模式 == null){return;};
-        //new obsidian.Notice(所选文本+"\n"+当前行文本);
-        if(所选文本==null){
-            var 标题式 = /^\s*#+ [^#]+$/;
-            var 列表式 = /^\s*(\- [^\[]|\d+\. ).*$/;
-            var 待办式 = /^\s*\- \[[^\[\]]] .*$/;
-            var 代码式 = /^```[^`]*$/;
-            var 引用式 = /^\>.*$/;
-            if(标题式.test(当前行文本)){
-                表达式 = 标题式;
-            }else if(待办式.test(当前行文本)){
-                表达式 = 待办式;
-            }else if(列表式.test(当前行文本)){
-                表达式 = 列表式;
-            }else if(代码式.test(当前行文本)){
-                表达式 = 代码式;
-            }else if(引用式.test(当前行文本)){
-                表达式 = 引用式;
-            }else{
-                return;
-            }
-            console.log('表达式 '+表达式);
-            //逐行判断是否符合指定表达式
-            for (var i=1;i<=末行行号;i++){
-                var 新行号;
-                if(方向=="下"){
-                    新行号= 当前行号+i;
-                }else if(方向=="上"){
-                    新行号= 当前行号-i;
-                };
-                if(新行号<0 || 新行号>末行行号){
-                    return;
-                }
-                var 临时行文本 = 编辑模式.getLine(新行号);
-                if(表达式.test(临时行文本)){
-                    编辑模式.setCursor({line:新行号,ch:临时行文本.length});
-                    break
-                };
-            };
-        }else{
-            var 搜索范围="";
-            var 加粗式 = /^\*\*[^\*]+\*\*$/;
-            var 高亮式 = /^==[^=]+==$/;
-            var 注释式 = /^%%[^%]*%%$/;
-            var 删除式 = /^~~[^~]*~~$/;
-            var 链接式 = /^\[\[[^\[\]]+\]\]$/;
-            if(加粗式.test(所选文本)){
-                表达式 = /\*\*[^\*]+\*\*/g;
-            }else if(高亮式.test(所选文本)){
-                表达式 = /==[^=]+==/g;
-            }else if(注释式.test(所选文本)){
-                表达式 = /%%[^%]*%%/g;
-            }else if(删除式.test(所选文本)){
-                表达式 = /~~[^~]*~~/g;
-            }else if(链接式.test(所选文本)){
-                表达式 = /\[\[[^\[\]]+\]\]/g;
-            }else{
-                表达式 = 所选文本;
-            }
-            console.log('表达式 '+表达式);
-            选至文首 = 编辑模式.getRange({line:0,ch:0},当前光标);
-            var 以前字数 = 选至文首.length;
-            var 返回位置 = 0;
-            var 搜索结果,起始位置,结束位置;
-            if(方向=="下"){
-                搜索范围 = 编辑模式.getRange(当前光标,{line:末行行号,ch:末行文本.length});
-                返回位置 = 搜索范围.search(表达式);
-                if(返回位置<0){
-                    return
-                };
-                搜索结果 = 搜索范围.match(表达式)[0];
-                //new obsidian.Notice(搜索结果.length);
-                起始位置 = 以前字数+返回位置;
-                结束位置 = 起始位置+搜索结果.length;
-                编辑模式.setSelection({line:0,ch:起始位置}, {line:0,ch:结束位置});
-            }else if(方向=="上"){
-                搜索范围 = 编辑模式.getRange({line:0,ch:0},{line:当前光标.line,ch:当前光标.ch-所选文本.length});
-                if(搜索范围.search(表达式)<0){
-                    return
-                };
-                搜索结果 = 搜索范围.match(表达式).pop();
-                返回位置 = 搜索范围.lastIndexOf(搜索结果);
-                //new obsidian.Notice(搜索结果);
-                结束位置 = 返回位置+搜索结果.length;
-                编辑模式.setSelection({line:0,ch:返回位置}, {line:0,ch:结束位置});
-            };
-        }
-    }
-
+    
     关闭格式刷() {
         newNotice.hide();
         //关闭所有格式刷变量
@@ -1433,49 +1256,7 @@ class MyPlugin extends obsidian.Plugin {
         isXB = false;
         
     };
-
-    游标上移() {
-        this.获取编辑器信息 ();
-        编辑模式.exec("goUp");
-    };
-    游标下移() {
-        this.获取编辑器信息 ();
-        编辑模式.exec("goDown");
-    };
-    游标左移() {
-        this.获取编辑器信息 ();
-        if(/(==|\*\*|~~|%%|\[\[|\]\])$/.test(选至行首)){
-            编辑模式.exec("goLeft");
-            编辑模式.exec("goLeft");
-        }else{
-            编辑模式.exec("goLeft");
-        };
-    };
-    游标右移() {
-        this.获取编辑器信息 ();
-        if(/^(==|\*\*|~~|%%|\[\[|\]\])/.test(选至行尾)){
-            编辑模式.exec("goRight");
-            编辑模式.exec("goRight");
-        }else{
-            编辑模式.exec("goRight");
-        };
-    };
-    游标移至行首() {
-        this.获取编辑器信息 ();
-        编辑模式.setCursor({line:当前行号,ch:0});
-    };
-    游标移至行尾() {
-        this.获取编辑器信息 ();
-        编辑模式.setCursor({line:当前行号,ch:当前行文本.length});
-    };
-    游标移至文首() {
-        this.获取编辑器信息 ();
-        编辑模式.exec("goStart");
-    };
-    游标移至文末() {
-        this.获取编辑器信息 ();
-        编辑模式.exec("goEnd");
-    };
+ 
 
     切换文件列表(_num) {
         this.获取编辑器信息 ();
@@ -1849,8 +1630,10 @@ class MyPlugin extends obsidian.Plugin {
     转换代码块() {
         this.获取编辑器信息 ();
         if(所选文本==null){
-            笔记全文.replaceRange("```\n\n```", 当前光标, 当前光标);
-            编辑模式.exec("goDown");
+            笔记全文.replaceRange("```\n```", 当前光标, 当前光标);
+            编辑模式.exec("goRight");
+            编辑模式.exec("goRight");
+            编辑模式.exec("goRight");
         }else{
             var link = /```[^`]+```/;	//是否包含代码行符号
             var link1 = /^[^`]*```[^`]*$/m;	//是否只包含一侧的`
@@ -1910,34 +1693,7 @@ class MyPlugin extends obsidian.Plugin {
             }
         }
     };
-    /*转换挖空() {
-        this.获取编辑器信息 ();
-        if(所选文本==null){
-            if(isSB){
-                isSB = false;
-                newNotice.hide();
-                new obsidian.Notice("已关闭挖空格式刷！");
-            }
-            笔记全文.replaceRange("<sup></sup>", 当前光标, 当前光标);
-            编辑模式.setCursor({line:当前行号,ch:Number(当前光标.ch+5)});
-        }else{
-            var link = /\<sup\>[^\<\>]*\<\/sup\>/g;	//是否包含<sup>下标</sup>
-            var link1 = /\<sup\>[^\<\>\/]*$|^[^\<\>]*\<\/sup\>/g;	//是否只包含一侧的<sup>下标</sup>
-            if (link1.test(所选文本)){
-                //new obsidian.Notice("只有一侧出现<sup>下标</sup>符号");
-                return;
-            }else if (link.test(所选文本)){
-                所选文本 = 所选文本.replace(/(\<sup\>|\<\/sup\>)/g,"");
-                this.替换所选文本 (所选文本);
-            }else{
-                所选文本 = 所选文本.replace(/^(.+)$/mg,"\<sup\>$1\<\/sup\>");
-                所选文本 = 所选文本.replace(/^\<sup\>\s*\<\/sup\>$/mg,"");
-                this.替换所选文本 (所选文本);
-                编辑模式.exec("goRight");
-            }
-        };
-    };*/
-
+    
     上标格式刷(){
         this.获取编辑器信息 ();
         if(所选文本==null){
