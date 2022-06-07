@@ -6,6 +6,7 @@ var obsidian = require('obsidian')
 使用声明
 ZH增强编辑插件借鉴多款社区插件开发而成，蚕子水平有限，代码或有缺陷，不能保证任何操作均会正常，请在使用之前备份库笔记，谢谢配合。
 开发：蚕子 QQ：312815311 更新时间：2022-4-18
+修改：我想煞了你 QQ:1424630446 更新时间：2022-6-7
 ***************************************************************************** */
 
 var en = {
@@ -403,12 +404,24 @@ class MyPlugin extends obsidian.Plugin {
             callback: () => this.转换行内代码()
         }); 
         */
+
     this.addCommand({
       id: 'add-daima',
       name: '```代码块```',
       callback: () => this.转换代码块(),
+      // 添加默认快捷键 ctrl+shift+k 和 typora一样
       hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'K' }],
     })
+
+    // 添加插入图片链接命令
+    this.addCommand({
+      id: 'add-imageLink',
+      name: '![图片名字](图片链接)',
+      callback: () => this.插入图片链接(),
+      // 添加默认快捷键 ctrl+shift+i 和 typora一样
+      hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'i' }],
+    })
+
     this.addCommand({
       id: 'add-langxian',
       name: '~~~三浪线~~~',
@@ -1685,6 +1698,25 @@ class MyPlugin extends obsidian.Plugin {
     }
   }
 
+  // 目的达到 typora 一样的效果
+  // 未实现 tab 进行 label link 跳转
+  插入图片链接() {
+    this.获取编辑器信息()
+    if (所选文本 == null) {
+      // 插入markdown图片链接
+      笔记全文.replaceRange('![]()', 当前光标, 当前光标)
+      编辑模式.exec('goRight')
+      编辑模式.exec('goRight')
+    } else {
+      var newImageLabel = '![' + 所选文本 + ']' + '(' + ')'
+      // example: ！[所选文本]()
+      所选文本 = 所选文本.replace(所选文本, newImageLabel)
+      new obsidian.Notice(所选文本)
+      this.替换所选文本(所选文本)
+      编辑模式.exec('goLeft')
+    }
+  }
+
   转换行内代码() {
     this.获取编辑器信息()
     if (所选文本 == null) {
@@ -1718,6 +1750,7 @@ class MyPlugin extends obsidian.Plugin {
       编辑模式.exec('goRight')
       编辑模式.exec('goRight')
     } else {
+      // 下面两个 link 和 link1 都是正则表达式
       var link = /```[^`]+```/ //是否包含代码行符号
       var link1 = /^[^`]*```[^`]*$/m //是否只包含一侧的`
       所选文本 = 所选文本.replace(/\n/g, '↫')
