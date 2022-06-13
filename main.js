@@ -76,6 +76,7 @@ var zhCN = {
     '控制光标在标题、列表项、待办事项、代码块和引用等文本行之间来回跳转，或在粗体、突出显示、注释、删除和链接等Markdown语法之间来回跳转',
 }
 
+// 增强编辑，设置图标
 const 上标图标 =
   '<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path fill="currentColor"d="M16 7.41L11.41 12L16 16.59L14.59 18L10 13.41L5.41 18L4 16.59L8.59 12L4 7.41L5.41 6L10 10.59L14.59 6L16 7.41M21.85 9h-4.88V8l.89-.82c.76-.64 1.32-1.18 1.7-1.63c.37-.44.56-.85.57-1.23a.884.884 0 0 0-.27-.7c-.18-.19-.47-.28-.86-.29c-.31.01-.58.07-.84.17l-.66.39l-.45-1.17c.27-.22.59-.39.98-.53S18.85 2 19.32 2c.78 0 1.38.2 1.78.61c.4.39.62.93.62 1.57c-.01.56-.19 1.08-.54 1.55c-.34.48-.76.93-1.27 1.36l-.64.52v.02h2.58V9z"/></svg>'
 const 下标图标 =
@@ -107,17 +108,24 @@ const DEFAULT_SETTINGS = {
   version: '0.4.5',
   hColor: '',
   bColor: '',
+  // 设置字体颜色
+  // 红色
   hColor1: 'red',
+  // 橙色
   hColor2: 'orange',
+  // 黄色
   hColor3: 'yellow',
-  hColor4: '#C32E94',
-  hColor5: '#13C6C3',
+  // 绿色
+  hColor4: 'green',
+  // 粉色
+  hColor5: 'pink',
 
-  bColor1: '#FFB78B',
-  bColor2: '#CDF469',
-  bColor3: '#A0CCF6',
-  bColor4: '#F0A7D8',
-  bColor5: '#ADEFEF',
+  // 背景颜色
+  bColor1: 'red',
+  bColor2: 'orange',
+  bColor3: 'yellow',
+  bColor4: 'green',
+  bColor5: 'pink',
 }
 
 var 当前版本 = '0.5.2'
@@ -426,6 +434,34 @@ class MyPlugin extends obsidian.Plugin {
       hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'm' }],
     })
 
+    // 添加大写转换
+    this.addCommand({
+      id: 'add-upperCase',
+      name: '转换大写(upperCase)',
+      callback: () => this.转换大写(),
+      // shortcut: ctrl + shift + u
+      // hotkeys: [{ modifiers: ["Mod","Shift"], key: "u" }j ]
+    })
+
+    // 添加小写转换
+    this.addCommand({
+      id: 'add-lowerCase',
+      name: '转换小写(lowerCase)',
+      callback: () => this.转换小写(),
+      // shortcut: ctrl + shift + u
+      // hotkeys: [{ modifiers: ["Mod","Shift"], key: "c" } ]
+    })
+
+    // 添加toggle命令，如果全部是大写就转换成小写。
+    // 否则转换成大写
+    this.addCommand({
+      id: 'toggleCase',
+      name: '切换大小写(toggleCase)',
+      callback: () => this.切换大小写(),
+      // shortcut: ctrl + shift + u
+      // hotkeys: [{ modifiers: ["Mod","Shift"], key: "c" } ]
+    })
+
     this.addCommand({
       id: 'add-langxian',
       name: '~~~三浪线~~~',
@@ -463,7 +499,7 @@ class MyPlugin extends obsidian.Plugin {
 
     this.addCommand({
       id: 'text-Color1',
-      name: '转换彩色文字1',
+      name: '转换彩色文字1（红色）redfont',
       callback: () => {
         this.settings.hColor = this.settings.hColor1
         this.转换文字颜色()
@@ -472,7 +508,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-Color2',
-      name: '转换彩色文字2',
+      name: '转换彩色文字2（橙色）orangefont',
       callback: () => {
         this.settings.hColor = this.settings.hColor2
         this.转换文字颜色()
@@ -481,7 +517,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-Color3',
-      name: '转换彩色文字3',
+      name: '转换彩色文字3（黄色）yellowfont',
       callback: () => {
         this.settings.hColor = this.settings.hColor3
         this.转换文字颜色()
@@ -490,7 +526,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-Color4',
-      name: '转换彩色文字4',
+      name: '转换彩色文字4（绿色）greenfont',
       callback: () => {
         this.settings.hColor = this.settings.hColor4
         this.转换文字颜色()
@@ -499,7 +535,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-Color5',
-      name: '转换彩色文字5',
+      name: '转换彩色文字5（粉色）pinkfont',
       callback: () => {
         this.settings.hColor = this.settings.hColor5
         this.转换文字颜色()
@@ -508,7 +544,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-background1',
-      name: '转换彩色背景1',
+      name: '转换彩色背景1（红色）redbg',
       callback: () => {
         this.settings.bColor = this.settings.bColor1
         this.转换背景颜色()
@@ -517,7 +553,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-background2',
-      name: '转换彩色背景2',
+      name: '转换彩色背景2（橙色）orangebg',
       callback: () => {
         this.settings.bColor = this.settings.bColor2
         this.转换背景颜色()
@@ -526,7 +562,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-background3',
-      name: '转换彩色背景3',
+      name: '转换彩色背景3（黄色）yellowbg',
       callback: () => {
         this.settings.bColor = this.settings.bColor3
         this.转换背景颜色()
@@ -535,7 +571,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-background4',
-      name: '转换彩色背景4',
+      name: '转换彩色背景4（绿色）greenbg',
       callback: () => {
         this.settings.bColor = this.settings.bColor4
         this.转换背景颜色()
@@ -544,7 +580,7 @@ class MyPlugin extends obsidian.Plugin {
     })
     this.addCommand({
       id: 'text-background5',
-      name: '转换彩色背景5',
+      name: '转换彩色背景5（粉色）pinkbg',
       callback: () => {
         this.settings.bColor = this.settings.bColor5
         this.转换背景颜色()
@@ -1070,8 +1106,10 @@ class MyPlugin extends obsidian.Plugin {
       const menuDom = menu.dom
       menuDom.addClass('Enhanced-editing-menu')
 
+      // 状态栏设置
       menu.addItem((item) => {
         item.setTitle('设置插件')
+        // 设置齿轮图标
         item.setIcon('gear')
         item.onClick(() => {
           this.app.setting.open()
@@ -1080,6 +1118,7 @@ class MyPlugin extends obsidian.Plugin {
       })
       menu.addItem((item) => {
         item.setTitle('设置快捷键')
+        // 设置齿轮图标
         item.setIcon('gear')
         item.onClick(() => {
           this.app.setting.open()
@@ -1119,16 +1158,17 @@ class MyPlugin extends obsidian.Plugin {
         item.setIcon('普通格式刷')
         item.onClick(() => this.高亮格式刷())
       })
-      /*
-            menu.addItem((item) => {
-                item.setTitle("关闭 格式刷");
-                item.setIcon("cross");
-                item.onClick(() =>{
-                    this.关闭格式刷();
-                    new obsidian.Notice("已关闭格式刷！");
-                });
-            });*/
 
+      menu.addItem((item) => {
+        item.setTitle('关闭 格式刷')
+        item.setIcon('cross')
+        item.onClick(() => {
+          this.关闭格式刷()
+          new obsidian.Notice('已关闭格式刷！')
+        })
+      })
+
+      // 设置状态栏字体颜色
       const fontcoloritem = menuDom.createDiv({
         cls: 'menu-item fontcoloritem',
       })
@@ -1708,7 +1748,11 @@ class MyPlugin extends obsidian.Plugin {
     this.获取编辑器信息()
     if (所选文本 == null) {
       // 插入markdown图片链接
-      笔记全文.replaceRange('![]()', 当前光标, 当前光标)
+      笔记全文.replaceRange('![图片]()', 当前光标, 当前光标)
+      编辑模式.exec('goRight')
+      编辑模式.exec('goRight')
+      编辑模式.exec('goRight')
+      编辑模式.exec('goRight')
       编辑模式.exec('goRight')
       编辑模式.exec('goRight')
     } else {
@@ -1718,6 +1762,48 @@ class MyPlugin extends obsidian.Plugin {
       // new obsidian.Notice(所选文本);
       this.替换所选文本(所选文本)
       编辑模式.exec('goLeft')
+    }
+  }
+
+  // 大写转换(upperCase)
+  转换大写() {
+    this.获取编辑器信息()
+    if (所选文本 == null) {
+      return
+    } else {
+      所选文本 = 所选文本.toUpperCase()
+      this.替换所选文本(所选文本)
+    }
+  }
+
+  // 小写转换(lowerCase)
+  转换小写() {
+    this.获取编辑器信息()
+    if (所选文本 == null) {
+      return
+    } else {
+      所选文本 = 所选文本.toLowerCase()
+      this.替换所选文本(所选文本)
+    }
+  }
+
+  // 切换大小写(toggleCase)
+  切换大小写() {
+    this.获取编辑器信息()
+    if (所选文本 == null) {
+      return
+    } else {
+      // 大写匹配
+      var pattern = /^[A-Z]+$/
+      if (pattern.test(所选文本)) {
+        所选文本 = 所选文本.toLowerCase()
+        this.替换所选文本(所选文本)
+        new obsidian.Notice(所选文本)
+      } else {
+        所选文本 = 所选文本.toUpperCase()
+        this.替换所选文本(所选文本)
+        new obsidian.Notice(所选文本)
+      }
     }
   }
 
